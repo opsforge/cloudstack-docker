@@ -196,6 +196,9 @@
     COPY:
       paramSyntaxRegex: /.+/
       rules: []
+    SHELL:
+      paramSyntaxRegex: /^~?([\w-.~:/?#\[\]\\\/*@!$&'()*+,;=.{}"]+[\s]*)+$/
+      rules: []
     ENTRYPOINT:
       paramSyntaxRegex: /.+/
       rules: []
