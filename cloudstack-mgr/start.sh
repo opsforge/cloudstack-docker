@@ -57,4 +57,10 @@ if [ $DEPLOYHYPERV ]; then
   sleep 10
 fi
 
+if [ $DEPLOYXENSERVER ]; then
+  /usr/share/cloudstack-common/scripts/storage/secondary/cloud-install-sys-tmplt -m /export/secondary -u http://cloudstack.apt-get.eu/systemvm/4.6/systemvm64template-4.6.0-xen.vhd.bz2 -h xenserver
+  service cloudstack-management restart
+  sleep 10
+fi
+
 tail -f /var/log/cloudstack/management/management-server.log

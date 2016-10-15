@@ -15,7 +15,8 @@ EXPOSE 8080
 VOLUME ["/export"]
 
 RUN apt-get update && \
-    apt-get install openntpd wget dnsutils curl nfs-kernel-server openntpd openssh-client -y
+    apt-get install openntpd wget dnsutils curl nfs-kernel-server openntpd openssh-client -y && \
+    apt-get clean
 
 RUN echo "deb http://cloudstack.apt-get.eu/ubuntu trusty 4.9" >> /etc/apt/sources.list.d/cloudstack.list && \
     curl http://cloudstack.apt-get.eu/release.asc | apt-key add - && \
@@ -39,6 +40,10 @@ RUN mkdir -p /export/primary && \
     mkdir -p /var/lib/cloudstack/management/.ssh && \
     ssh-keygen -f /var/lib/cloudstack/management/.ssh/id_rsa -N '' && \
     chown -R cloud:cloud /var/lib/cloudstack/management
+
+RUN mkdir -p /usr/share/cloudstack-common/scripts/vm/hypervisor/xenserver && \
+    curl -ksSL -o /usr/share/cloudstack-common/scripts/vm/hypervisor/xenserver http://download.cloud.com.s3.amazonaws.com/tools/vhd-util && \
+    chmod 0755 /usr/share/cloudstack-common/scripts/vm/hypervisor/xenserver/vhd-util
 
 COPY start.sh /root/start.sh
 
