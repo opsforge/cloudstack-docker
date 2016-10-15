@@ -1,27 +1,49 @@
-# Dockerfile of Apache CloudStack mgmt. server on CentOS
+# Dockerfile of Apache CloudStack mgmt. server on Trusty
 
-FROM centos:7
+FROM ubuntu:14.04
 
 MAINTAINER opsforge.io
 LABEL name="cloudstack"
-LABEL version="0.0.1"
+LABEL version="0.8.0"
 
-CMD /bin/zsh -c '???'
+SHELL ["/bin/bash", "-c"]
+
+ENV mysqlpass 'Standard1'
 
 USER root
 
-RUN echo -e "[cloudstack] \n\
-name=cloudstack \n\
-baseurl=http://cloudstack.apt-get.eu/centos7/4.9/ \n\
-enabled=1 \n\
-gpgcheck=0" >> /etc/yum.repos.d/cloudstack.repo
+EXPOSE 8080
 
-RUN echo -e "[mysql-community] \n\
-name=MySQL Community connectors \n\
-baseurl=http://repo.mysql.com/yum/mysql-connectors-community/el/7/x86_64/ \n\
-enabled=1" >> /etc/yum.repos.d/mysql.repo
+VOLUME ["/export"]
 
-RUN rpm --import http://repo.mysql.com/RPM-GPG-KEY-mysql && \
-    yum update -y && \
-    yum install ntp mysql-connector-python cloudstack-management -y && \
-    yum clean all -y
+RUN apt-get update && \
+    apt-get install openntpd wget dnsutils curl nfs-kernel-server openntpd openssh-client -y
+
+RUN echo "deb http://cloudstack.apt-get.eu/ubuntu trusty 4.9" >> /etc/apt/sources.list.d/cloudstack.list && \
+    curl http://cloudstack.apt-get.eu/release.asc | apt-key add - && \
+    apt-get update && \
+    apt-get install cloudstack-management -y && \
+    apt-get clean
+
+RUN mkdir -p /etc/sysconfig && \
+    echo -e "LOCKD_TCPPORT=32803\n\
+MOUNTD_PORT=892\n\
+RQUOTAD_PORT=875\n\
+STATD_PORT=662\n\
+TATD_OUTGOING_PORT=2020" >> /etc/sysconfig/nfs
+
+RUN mkdir -p /export/primary && \
+    mkdir -p /export/secondary && \
+    chmod -R 0777 /export && \
+    echo "/export  *(rw,async,no_root_squash,no_subtree_check)" >> /etc/exports && \
+    exportfs -a && \
+    cloudstack-setup-management && \
+    mkdir -p /var/lib/cloudstack/management/.ssh && \
+    ssh-keygen -f /var/lib/cloudstack/management/.ssh/id_rsa -N '' && \
+    chown -R cloud:cloud /var/lib/cloudstack/management
+
+COPY start.sh /root/start.sh
+
+RUN chmod 0755 /root/start.sh
+
+CMD ["/root/start.sh"]

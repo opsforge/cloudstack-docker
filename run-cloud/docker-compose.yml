@@ -1,0 +1,24 @@
+version: '2'
+
+services:
+
+  cloudstack:
+    privileged: true
+    image: opsforge/cloudstack:latest
+    ports:
+      - 8080:8080
+      - 8250:8250
+    links:
+      - cloudstack-mysql:mysql
+    volumes:
+      - /Users/yeehaw/export:/export
+
+  cloudstack-mysql:
+    restart: always
+    image: mysql:5.5
+    environment:
+      - MYSQL_ROOT_PASSWORD=Standard1
+    ports:
+      - 3306:3306
+    volumes:
+      - /Users/yeehaw/mysql/:/var/lib/mysql/
