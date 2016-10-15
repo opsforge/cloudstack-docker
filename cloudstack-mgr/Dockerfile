@@ -42,7 +42,7 @@ RUN mkdir -p /export/primary && \
     chown -R cloud:cloud /var/lib/cloudstack/management
 
 RUN mkdir -p /usr/share/cloudstack-common/scripts/vm/hypervisor/xenserver && \
-    curl -ksSL -o /usr/share/cloudstack-common/scripts/vm/hypervisor/xenserver http://download.cloud.com.s3.amazonaws.com/tools/vhd-util && \
+    wget -P /usr/share/cloudstack-common/scripts/vm/hypervisor/xenserver http://download.cloud.com.s3.amazonaws.com/tools/vhd-util && \
     chmod 0755 /usr/share/cloudstack-common/scripts/vm/hypervisor/xenserver/vhd-util
 
 COPY start.sh /root/start.sh
