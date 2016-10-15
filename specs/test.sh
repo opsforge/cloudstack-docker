@@ -9,6 +9,7 @@ if [ $? -eq 0 ]; then
   echo ">>> Docker Lints concluded and none failed."
 else
   echo ">>> Tests failed."
+  exit 1
 fi
 echo "Initiating DockerHub builds..."
 curl --data build=true -X POST 'https://registry.hub.docker.com/u/opsforge/cloudstack/trigger/9f7ad513-f6c4-45e9-b5e6-cc977910bf9f/'
