@@ -19,7 +19,7 @@ RUN apt-get update && \
     apt-get clean
 
 RUN echo "deb http://cloudstack.apt-get.eu/ubuntu trusty 4.9" >> /etc/apt/sources.list.d/cloudstack.list && \
-    curl http://cloudstack.apt-get.eu/release.asc | apt-key add - && \
+    wget -O - http://cloudstack.apt-get.eu/release.asc | apt-key add - && \
     apt-get update && \
     apt-get install cloudstack-management -y && \
     apt-get clean
