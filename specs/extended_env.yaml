@@ -197,7 +197,7 @@
       paramSyntaxRegex: /.+/
       rules: []
     SHELL:
-      paramSyntaxRegex: /^~?([\w-.~:/?#\[\]\\\/*@!$&'()*+,;=.{}"]+[\s]*)+$/
+      paramSyntaxRegex: /.+/
       rules: []
     ENTRYPOINT:
       paramSyntaxRegex: /.+/
