@@ -4,6 +4,28 @@
     description: "Default Profile. Checks basic syntax."
     includes:
       #- recommended_label_rules.yaml
+  general:
+    ref_url_base: "https://docs.docker.com/reference/builder/"
+    valid_instructions:
+      - "FROM"
+      - "MAINTAINER"
+      - "RUN"
+      - "CMD"
+      - "LABEL"
+      - "EXPOSE"
+      - "ENV"
+      - "ADD"
+      - "COPY"
+      - "ENTRYPOINT"
+      - "VOLUME"
+      - "USER"
+      - "WORKDIR"
+      - "SHELL"
+      - "ONBUILD"
+      - "ARG"
+      - "STOPSIGNAL"
+    ignore_regex: /^#/
+    multiline_regex: /\\$/
   line_rules:
     LABEL:
        paramSyntaxRegex: /.+/
