@@ -6,8 +6,6 @@ MAINTAINER opsforge.io
 LABEL name="cloudstack"
 LABEL version="0.8.0"
 
-SHELL ["/bin/bash", "-c"]
-
 ENV mysqlpass 'Standard1'
 
 USER root
@@ -26,11 +24,11 @@ RUN echo "deb http://cloudstack.apt-get.eu/ubuntu trusty 4.9" >> /etc/apt/source
     apt-get clean
 
 RUN mkdir -p /etc/sysconfig && \
-    echo -e "LOCKD_TCPPORT=32803\n\
+    /bin/bash -c "echo -e \"LOCKD_TCPPORT=32803\n\
 MOUNTD_PORT=892\n\
 RQUOTAD_PORT=875\n\
 STATD_PORT=662\n\
-TATD_OUTGOING_PORT=2020" >> /etc/sysconfig/nfs
+TATD_OUTGOING_PORT=2020\" >> /etc/sysconfig/nfs"
 
 RUN mkdir -p /export/primary && \
     mkdir -p /export/secondary && \
