@@ -15,7 +15,7 @@ services:
     links:
       - cloudstack-mysql:mysql
     volumes:
-      - /Users/yeehaw/export:/export
+      - /home/vagrant/export:/export
 
   cloudstack-mysql:
     restart: always
@@ -25,4 +25,4 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - /Users/yeehaw/mysql/:/var/lib/mysql/
+      - /home/vagrant/mysql/:/var/lib/mysql/
